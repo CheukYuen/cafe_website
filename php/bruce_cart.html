@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>CampusSmart Food | Order</title>
+    <link href="../templatemo_style.css" rel="stylesheet" type="text/css"/>
+    <script type='text/javascript' src="jquery.js"></script>
+    <script type='text/javascript' src="bruce.js"></script>
+    <script type='text/javascript' src="cart.js"></script>
+    <script type='text/javascript'>
+
+        function WriteToFile(text) {
+            location.href = "Order.php?ordervalue=" + text;
+        }
+
+        function BackToIndex() {
+            var currentURL = window.location;
+
+            var directedURL = String(currentURL.pathname).slice(0, -9) + "campussmartfood.php";
+            alert(directedURL);
+            window.location.href = directedURL;
+
+        }
+
+
+        function ConfirmOrderFunction(text) {
+
+            var currentURL = window.location;
+
+            var directedURL = String(currentURL.pathname).slice(0, -9) + "campussmartfood.php?updatevalue=" + text;
+
+            window.location.href = directedURL;
+
+
+        }
+        function updatePrice(dorp) {
+            var totaC = qty1 * cal1 + qty2 * cal2 + qty3 * cal3;
+            var subTo = Math.round((qty1 * price1 + qty2 * price2 + qty3 * price3) * 100) / 100;
+            var tax = Math.round((qty1 * price1 + qty2 * price2 + qty3 * price3) * 0.0825 * 100) / 100;
+            var dis = 0;
+
+            var total = Math.round(((qty1 * price1 + qty2 * price2 + qty3 * price3) + ((qty1 * price1 + qty2 * price2 + qty3 * price3) * 0.0825)) * 100) / 100;
+
+            if (Bstatus == false) {
+                $("#vegeuser").hide();
+                $("#logindiv").show();
+            } else {
+                $("#vegeuser").show();
+                $("#logindiv").hide();
+                dis = Math.round(total * 10) / 100;
+                document.getElementById('dis').innerHTML = dis;
+            }
+
+            document.getElementById('item1').innerHTML = item1;
+            document.getElementById('item2').innerHTML = item2;
+            document.getElementById('item3').innerHTML = item3;
+
+            document.getElementById('price1').innerHTML = price1;
+            document.getElementById('price2').innerHTML = price2;
+            document.getElementById('price3').innerHTML = price3;
+
+            document.getElementById('qty1').innerHTML = qty1;
+            document.getElementById('qty2').innerHTML = qty2;
+            document.getElementById('qty3').innerHTML = qty3;
+
+            document.getElementById('cal1').innerHTML = cal1;
+            document.getElementById('cal2').innerHTML = cal2;
+            document.getElementById('cal3').innerHTML = cal3;
+
+            document.getElementById('totalC').innerHTML = totaC;
+            document.getElementById('sub').innerHTML = subTo;
+            document.getElementById('tax').innerHTML = tax;
+
+            document.getElementById('totalAmount').innerHTML = Math.round((total - dis + dorp) * 100) / 100;
+            document.getElementById('Rtotal').innerHTML = Math.round((Bbudget - total - dis + dorp) * 100) / 100;
+
+
+        }
+
+        $(document).ready(function () {
+
+            $("#dOptions").hide();
+
+
+            $("#radioD").click(function () {
+                $("#dOptions").show();
+                document.getElementById('dorp').innerHTML = 5;
+
+                updatePrice(5);
+            });
+            $("#radioP").click(function () {
+                $("#dOptions").hide();
+                document.getElementById('dorp').innerHTML = 0;
+
+                updatePrice(0);
+            });
+            var intRegex = /^\d+$/;
+            updatePrice(0);
+
+
+            if (Bstatus == false) {
+                $("#trC").hide();
+                $("#trB").hide();
+            } else {
+                if (Bcal == "") {
+                    $("#trC").hide();
+                } else {
+                    document.getElementById('Rcalories').innerHTML = Bcal - document.getElementById("totalC").innerHTML;
+                    $("#trC").show();
+                    if (document.getElementById('Rcalories').innerHTML < 0) {
+                        alert("You exceed the daily consumption of calories!");
+                    }
+                }
+
+                if (Bbudget == "") {
+                    $("#trB").hide();
+                } else {
+                    updatePrice(0);
+                    $("#trB").show();
+                    if (document.getElementById('Rtotal').innerHTML < 100) {
+                        alert("Your budget is less than $100!");
+                    }
+                }
+            }
+
+
+            $("#btnlogin").click(function () {
+
+                if ($('#campusID').val() == "0002" && $('#campusPass').val() == "3333") {
+                    var text = 'var Bstatus=true; var Bg=' + Bg + '; var Bv=' + Bv + ';var Br=' + Br + ';var Bbudget="' + Bbudget + '";var Bcal="' + Bcal + '"; var name="Bruce"; var BsetC="' + BsetC + '";var BsetB="' + BsetB + '";';
+                    WriteToFile(text);
+                }
+            });
+
+            $("#btnlogout").click(function () {
+
+                var text = 'var Bstatus=false; var Bg=' + Bg + '; var Bv=' + Bv + ';var Br=' + Br + ';var Bbudget="' + Bbudget + '";var Bcal="' + Bcal + '"; var name="Bruce"; var BsetC="' + BsetC + '";var BsetB="' + BsetB + '";';
+                WriteToFile(text);
+
+            });
+
+
+            $("#logout").click(function () {
+                $("#campuscard").show();
+                $("#logout").hide();
+                $('#lblpotato').css("color", "black");
+                $('#lblchanna').css("color", "black");
+                $('#lblmizauna').css("color", "black");
+                $('#lblmushroom').css("color", "black");
+            });
+
+
+            $("#confirmOrder").click(function () {
+
+                if (Bstatus == true) {
+                    Bcal = document.getElementById("Rcalories").innerHTML;
+                    Bbudget = document.getElementById("Rtotal").innerHTML;
+
+                    var text = 'var Bstatus=true; var Bg=' + Bg + '; var Bv=' + Bv + ';var Br=' + Br + ';var Bbudget="' + Bbudget + '";var Bcal="' + Bcal + '"; var name="Bruce"; var BsetC="' + BsetC + '";var BsetB="' + BsetB + '";';
+
+
+                    ConfirmOrderFunction(text);
+
+
+                } else {
+                    BackToIndex();
+                }
+
+                if (document.getElementById('radioD').checked) {
+
+                    var address = $('#dOptions').val();
+                    alert("Thanks for your order! \nYour order is on its way and will be delivered to you at " + address + " by 20 minutes. \nYour total is $" + document.getElementById("totalAmount").innerHTML);
+                } else {
+                    alert("Thanks for your order! \n Your total is $" + document.getElementById("totalAmount").innerHTML);
+                }
+
+
+            });
+        });
+
+
+    </script>
+
+</head>
+<body>
+<div id="templatemo_wrapper">
+
+<div id="templatemo_header">
+
+
+    <div id="header_address">
+        <strong>Quick Contact</strong><br/>
+        408-554-7804
+    </div>
+
+</div>
+<!-- end of header -->
+
+<div id="templatemo_middle">
+
+    <div id="templatemo_banner">
+
+        <h1>Campus Cafe<span>with the best food</span></h1>
+
+    </div>
+
+    <div id="templatemo_menu">
+
+        <ul>
+            <li><a href="campussmartfood.php">Home</a></li>
+            <li><a href="registration.php">Registration</a></li>
+            <li><a href="cafe/cafe.php" class="current">Cafe</a></li>
+            <li><a href="Forum.php">Forum</a></li>
+            <li><a href="Visualization.php">Visualization</a></li>
+
+
+        </ul>
+
+    </div>
+    <!-- end of templatemo_menu -->
+
+</div>
+
+<div id="templatemo_main">
+
+    <div id="templatemo_content">
+
+
+        <div id="contact_form">
+
+            <h2>Shopping Cart</h2>
+
+            <form method="post" name="contact" action="#">
+                <div class="cleaner_h10"></div>
+                <div align="left" id="vegeuser"> Welcome, Bruce
+                    <div class="button" id="btnlogout" align="left"><a>Log out</div>
+                    </a>
+                </div>
+
+                <div align="right" id="logindiv">
+                    <p>CampusCard Number:
+                        <input type="text" name="campusID" id="campusID" class="required input_field" size="4"/>
+                    </p>
+
+                    <p>
+                        Password:
+                        <input type="password" name="campusPass" id="campusPass" class="required input_field" size="4"/>
+
+                    </p>
+
+                    <div class="button" id="btnlogin" align="right"><a>Log in</div>
+                    </a>
+
+                </div>
+
+                <div class="cleaner_h10"></div>
+                <div class="cleaner_h10"></div>
+                <div class="cleaner_h10"></div>
+
+
+                <div class="cleaner_h10"></div>
+
+                <p><strong>Your Cart:</strong></p>
+
+                <p><em>Please choose the deliver method
+
+
+                    <label><input type="radio" name="Dmethod" id="radioP" checked="checked"/>
+                        <strong>Pick-up</label>
+                    <label><input type="radio" name="Dmethod" id="radioD"/>
+                        Delivery (+$5)</strong></em></p></label>
+                <select id="dOptions">
+                    <option value="Building1">Building 1</option>
+                    <option value="Building2">Building 2</option>
+                    <option value="Building3">Building 3</option>
+                    <option value="Building4">Building 4</option>
+                    <option value="Building5">Building 5</option>
+                    <option value="Building6">Building 6</option>
+                    <option value="Building7">Building 7</option>
+                    <option value="Building8">Building 8</option>
+                    <option value="Building9">Building 9</option>
+                    <option value="Building10">Building 10</option>
+                </select>
+
+
+                <table width="100%" border="0" cellpadding="7px">
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Caloric</th>
+                        <th>Item Price</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td id="item1"></td>
+                        <td id="qty1"></td>
+                        <td id="cal1"></td>
+                        <td id="price1"></td>
+                    </tr>
+                    <tr>
+                        <td id="item2"></td>
+                        <td id="qty2"></td>
+                        <td id="cal2"></td>
+                        <td id="price2"></td>
+                    </tr>
+                    <tr>
+                        <td id="item3"></td>
+                        <td id="qty3"></td>
+                        <td id="cal3"></td>
+                        <td id="price3"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Total Calories</strong></td>
+                        <td id="totalC">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>SubTotal</strong></td>
+                        <td id="sub">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Tax (8.25%)</strong></td>
+                        <td id="tax">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Discount</strong></td>
+                        <td id="dis">0</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Delivery</strong></td>
+                        <td id="dorp">0</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Total</strong></td>
+                        <td id="totalAmount">&nbsp;</td>
+                    </tr>
+                    <tr id="trC">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Remaining Calories</strong></td>
+                        <td id="Rcalories">&nbsp;</td>
+                    </tr>
+                    <tr id="trB">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Remaining Budget</strong></td>
+                        <td id="Rtotal">&nbsp;</td>
+                    </tr>
+                </table>
+                <div class="button" id="confirmOrder" align="right"><a>Confirm</div>
+                </a>
+            </form>
+
+        </div>
+
+    </div>
+
+    <div id="templatemo_sidebar">
+
+        <h2>Delicious Foods</h2>
+
+        <ul class="templatemo_list">
+            <li><a href="cafe/amber/amber.php">Amber</a></li>
+            <li><a href="cafe/cpk/cpk.php">California Pizza Kitchen</a></li>
+            <li><a href="cafe/faz/faz.php">Faz Restaurant</a></li>
+            <li><a href="cafe/padT/padT.php">Pad Thai</a></li>
+            <li><a href="cafe/truya/truya.php">Truya Sushi</a></li>
+        </ul>
+
+
+        <div class="cleaner_h40"></div>
+
+        <h5>Cafe Map</h5>
+
+        <div class="image_wrapper fl_img">
+            <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                    src="https://maps.google.com/maps/ms?msa=0&amp;msid=217351135929404303904.0004cf60aaf7441e23741&amp;hl=en&amp;ie=UTF8&amp;t=t&amp;z=15&amp;output=embed"></iframe>
+            <br/>
+            <small>View <a
+                    href="https://maps.google.com/maps/ms?msa=0&amp;msid=217351135929404303904.0004cf60aaf7441e23741&amp;hl=en&amp;ie=UTF8&amp;t=m&amp;z=17&amp;source=embed"
+                    style="color:#0000FF;text-align:left">Campus Food</a> in a larger map
+            </small>
+            </a></div>
+
+    </div>
+
+    <div class="cleaner"></div>
+</div>
+
+</div>
+<!-- end of wrapper -->
+
+<div id="templatemo_footer_wrapper">
+
+    <div id="templatemo_footer">
+
+        Copyright © Fall 2012. COEN 276 Group J
+
+    </div>
+    <!-- end of templatemo_footer -->
+</div>
+
+</body>
+</html>

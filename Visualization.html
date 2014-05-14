@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>visualization</title>
+    <link href="templatemo_style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="dist/jquery.jqplot.css"/>
+    <script language="javascript" type="text/javascript" src="excanvas.js"></script>
+    <script language="javascript" type="text/javascript" src="jquery-1.8.2.js"></script>
+    <script language="javascript" type="text/javascript" src="dist/jquery.jqplot.js"></script>
+    <script language="javascript" type="text/javascript" src="dist/plugins/jqplot.pieRenderer.js"></script>
+    <script language="javascript" type="text/javascript" src="bruce.js"></script>
+
+
+    <link rel="StyleSheet" type="text/css" href="../styles/visual.css"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages: ["corechart"]});
+        function drawChart(multiArry) {
+            //alert("Calory Track is ready.");
+            var data = google.visualization.arrayToDataTable(multiArry);
+
+            var options = {
+                title: 'Recent Calories Records',
+                hAxis: {title: 'records made recently', titleTextStyle: {color: 'black'}},
+                colors: ["#000095", "#66FFCC", "#993300", "#6633FF", "#CC0066", "#CCFF00", "#FF6633"],
+                backgroundColor: '#FFAE88'
+                //backgroundColor:rgb(255,166,166),
+                //vAxis:{title='Money Spent'}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type='text/javascript'>
+        $(document).ready(function () {
+
+            $('#has_sub').hover(
+                    function () {
+                        if ($("#sublists:first").is(":hidden")) {
+                            $("#sublists").slideDown(100);
+                        } else {
+                            $("#sublists").hide();
+                        }
+                    }
+            );
+
+            $('#has_sub2').hover(
+                    function () {
+                        if ($("#sublists2:first").is(":hidden")) {
+                            $("#sublists2").slideDown(100);
+                        } else {
+                            $("#sublists2").hide();
+                        }
+                    }
+            );
+
+        });
+    </script>
+
+</head>
+
+<body>
+
+<div id="templatemo_wrapper">
+
+    <div id="templatemo_header">
+
+
+        <div id="header_address">
+            <strong>Quick Contact</strong><br/>
+            408-554-7804
+        </div>
+
+    </div>
+    <!-- end of header -->
+
+    <div id="templatemo_middle">
+
+        <div id="templatemo_banner">
+
+            <h1>Campus Cafe<span>with the best food</span></h1>
+
+        </div>
+
+        <div id="templatemo_menu">
+
+            <ul>
+                <li><a href="index.html"> Home</a></li>
+                <li><a href="registration.php"> Registration</a></li>
+                <li><a href="login.php"> Login</a></li>
+                <li><a href="account.php"> Account</a></li>
+                <li><a href="cafe/cafe.html"> Cafe</a></li>
+                <li><a href="Forum.html"> Forum</a></li>
+                <li><a href="Visualization.html"> Visualization</a></li>
+
+            </ul>
+
+        </div>
+        <!-- end of templatemo_menu -->
+
+    </div>
+    <!--end of middle-->
+    <div id="templatemo_main">
+
+        <div id="contact_form">
+
+            <h2>Visualization</h2>
+
+
+            <div class="cleaner_h30"></div>
+
+            <div id="logindiv">
+
+                <h2>Log In</h2>
+
+                <form method="post" name="contact" action="#">
+
+                    <input type="hidden" name="post" value="Send"/>
+                    <label for="author">CampusCard number:</label> <input type="text" name="campusID" id="campusID"
+                                                                          class="required input_field"/>
+
+                    <div class="cleaner_h10"></div>
+
+                    <label for="email">Password:</label> <input type="password" name="campusPass" id="campusPass"
+                                                                class="required input_field"/>
+
+                    <div class="cleaner_h10"></div>
+
+
+                    <div class="button" id="Rbtnlogin"><a href="Visualization.html">Log in</div>
+                    </a>
+
+
+                </form>
+
+            </div>
+
+
+            <div id="logoutdiv">
+
+                <h2>Welcome, Bruce</h2>
+
+                <div class="button" id="btnlogout"><a href="Visualization.html">Log out</div>
+                </a>
+
+            </div>
+
+
+            <div class="cleaner_h50"></div>
+
+            <div id="budgetdiv">
+
+                <h2>Food Expenditure</h2>
+
+                <div id="chart1" style="margin-top:20px; margin-left:20px; width:460px; height:500px;"></div>
+
+
+            </div>
+            <div class="cleaner_h50"></div>
+
+            <div id="caldiv">
+
+                <h2>Caloric Information</h2>
+
+                <div id="chart2" style="margin-top:20px; margin-left:20px; width:460px; height:500px;"></div>
+
+            </div>
+
+        </div>
+
+        <div id="templatemo_sidebar">
+
+            <h2>Delicious Foods</h2>
+
+            <ul class="templatemo_list">
+                <li><a href="cafe/amber/amber.php"> Amber</a></li>
+                <li><a href="cafe/cpk/cpk.php"> California Pizza Kitchen </a></li>
+                <li><a href="cafe/faz/faz.php"> Faz Restaurant </a></li>
+                <li><a href="cafe/padT/padT.php"> Pad Thai </a></li>
+                <li><a href="cafe/truya/truya.php"> Truya Sushi </a></li>
+            </ul>
+
+
+            <div class="cleaner_h40"></div>
+
+            <h5>Cafe Map</h5>
+
+            <div class="image_wrapper fl_img">
+                <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                        src="https://maps.google.com/maps/ms?msa=0&amp;msid=217351135929404303904.0004cf60aaf7441e23741&amp;hl=en&amp;ie=UTF8&amp;t=t&amp;z=15&amp;output=embed"></iframe>
+                <br/>
+                <small>View <a
+                        href="https://maps.google.com/maps/ms?msa=0&amp;msid=217351135929404303904.0004cf60aaf7441e23741&amp;hl=en&amp;ie=UTF8&amp;t=m&amp;z=17&amp;source=embed"
+                        style="color:#0000FF;text-align:left">Campus Food</a> in a larger map
+                </small>
+                </a></div>
+
+        </div>
+
+        <div class="cleaner"></div>
+    </div>
+
+</div>
+<!-- end of wrapper -->
+
+<div id="templatemo_footer_wrapper">
+
+    <div id="templatemo_footer">
+
+        Copyright © 2012 Leon & Bruce
+
+    </div>
+    <!-- end of templatemo_footer -->
+</div>
+
+</body>
+</html>
